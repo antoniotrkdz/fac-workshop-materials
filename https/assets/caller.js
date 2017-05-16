@@ -33,6 +33,9 @@ const VideoEndPoint = (function() {
         break;
       case 'END_CALL':
         break;
+        case 'hello':
+          this.send('V1','hiii','');
+          break;
       }
     }
     /** @method hangupCall

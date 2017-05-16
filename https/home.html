@@ -9,5 +9,22 @@
   </head>
   <body>
     <h1>Hello.....</h1>
+    <video class="video"></video>
   </body>
-</head>
+  <script>
+  // Prefer camera resolution nearest to 1280x720.
+  var constraints = {audio: false, video: true};
+
+  navigator.mediaDevices.getUserMedia(constraints)
+  .then(function(mediaStream) {
+    var video = document.querySelector('video');
+    video.srcObject = mediaStream;
+    video.onloadedmetadata = function(e) {
+    video.play();
+    };
+  })
+  .catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
+</script>
+<script src="/assets/comms.js" charset="utf-8"></script>
+<script src="/assets/caller.js" charset="utf-8"></script>
+<script src="/assets/driver.js" charset="utf-8"></script>
