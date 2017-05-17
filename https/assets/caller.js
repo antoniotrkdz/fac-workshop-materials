@@ -5,9 +5,13 @@ const VideoEndPoint = (function() {
    *  represents an actual video UI end point.
    */
   class VideoEndPoint extends EndPoint {
-    constructor(ep_name) {
+    constructor(ep_name, remoteVideoTag, localVideoTag, stateTag) {
       // Create a poller for this client
       super(ep_name);
+      this._state = 'IDLE';
+      this._stateTag = stateTag;
+      stateTag.textContent = this._state;
+
     }
     /** @method receive
      *  @description Entry point called by the base class when it receives a message for this object from another EndPoint.
@@ -54,6 +58,14 @@ const VideoEndPoint = (function() {
      *  @param {String} target - the name of the remote party that we want to start a call with
      */
     startCall(target) {
+      if (this._state === 'IDLE') {
+        this._state = 'RINGING';
+        this._stateTag.textContent = this._state;
+
+        this.send(target, 'CALL_REQUEST', {randomkey: 'randomvalue'});
+      } else {
+        alert('You\'re in a call, pay attention :)');
+      }
     }
   }
   return VideoEndPoint;
