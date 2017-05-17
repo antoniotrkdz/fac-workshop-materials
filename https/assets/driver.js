@@ -8,7 +8,7 @@
         remoteVideo: document.querySelector('#' + ep_name + ' .remoteVideo'),
         localVideo: document.querySelector('#' + ep_name + ' .localVideo'),
         state: document.querySelector('#' + ep_name + ' .state'),
-      }
+      };
     }
 
     // var endpoint = {};
@@ -24,13 +24,22 @@
         var ep_name = el.parentNode.id;
         var target_name = el.parentNode.querySelector('input').value;
 
-        console.log(ep_name + 'is calling: ' + target_name);
-
         endpoint[ep_name].startCall(target_name);
-      })
+      });
+
+      // v1.send('V2','hello',{a: 'hello'});
+    });
+
+    document.querySelectorAll('.endCall').forEach((el, index) => {
+      el.addEventListener('click', () => {
+        var ep_name = el.parentNode.id;
+        var target_name = el.parentNode.querySelector('input').value;
+
+        endpoint[ep_name].hangupCall();
+      });
 
       // v1.send('V2','hello',{a: 'hello'});
     });
     console.log(EndPoint);
-  })
+  });
 })();

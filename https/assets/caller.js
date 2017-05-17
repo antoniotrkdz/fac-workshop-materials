@@ -4,11 +4,14 @@ const VideoEndPoint = (function() {
    *  @description Specialisation of the generic EndPoint. Each instance of this class
    *  represents an actual video UI end point.
    */
+
   class VideoEndPoint extends EndPoint {
     constructor(ep_name, remoteVideoTag, localVideoTag, stateTag) {
       // Create a poller for this client
       super(ep_name);
       this._state = 'IDLE';
+      this._localVideoTag = localVideoTag;
+      this._remoteVideoTag = remoteVideoTag;
       this._stateTag = stateTag;
       stateTag.textContent = this._state;
 
@@ -24,10 +27,13 @@ const VideoEndPoint = (function() {
       this.log("END POINT RX PROCESSING... ("+from+", "+operation+")", data);
       switch (operation) {
       case 'CALL_REQUEST':
+        this.callRequest(from);
         break;
       case 'DENIED':
+        this.deniedCall();
         break;
       case 'ACCEPT_CALL':
+        this.acceptCall(from);
         break;
       case 'SDP_OFFER':
         break;
@@ -36,10 +42,11 @@ const VideoEndPoint = (function() {
       case 'ICE_CANDIDATE':
         break;
       case 'END_CALL':
+        this.endCall();
         break;
-        case 'hello':
-          this.send('V1','hiii','');
-          break;
+      case 'hello':
+        this.send('V1','hiii','');
+        break;
       }
     }
     /** @method hangupCall
@@ -47,6 +54,29 @@ const VideoEndPoint = (function() {
      *  clicking the hang-up button. We call our local 'endCall' method and then send 'END_CALL' to the remote party.
      */
     hangupCall() {
+      if(/^CALLE[RD]$/.test(this._state)) {
+        console.log(this.speakingWith);
+        this.send(this.speakingWith, 'END_CALL', {});
+        delete this.speakingWith;
+        this._state = 'IDLE';
+        this._stateTag.textContent = this._state;
+      }
+      else {
+        alert('Which call are you trying to end, mate?');
+      }
+    }
+
+    endCall() {
+      if(/^CALLE[RD]$/.test(this._state)) {
+
+        delete this.speakingWith;
+        this._state = 'IDLE';
+        this._stateTag.textContent = this._state;
+        this.endVideo();
+      }
+      else {
+        alert('Which call are you trying to end, mate?');
+      }
     }
     /** @method startCall
      *  @description The user wants to make a call to a remote EndPoint (target). This first part of the process
@@ -63,9 +93,59 @@ const VideoEndPoint = (function() {
         this._stateTag.textContent = this._state;
 
         this.send(target, 'CALL_REQUEST', {randomkey: 'randomvalue'});
+        console.log(this._name, ' call request to ', target);
       } else {
         alert('You\'re in a call, pay attention :)');
       }
+    }
+
+    deniedCall() {
+      if (this._state === 'RINGING') {
+        this._state = 'IDLE';
+        this._stateTag.textContent = this._state;
+        console.log('Call from ', this._name, 'has been denied');
+      }
+    }
+
+    callRequest(from) {
+      if (this._state === 'IDLE') {
+        this._state = 'CALLED';
+        this._stateTag.textContent = this._state;
+        this.speakingWith = from;
+        this.send(from, 'ACCEPT_CALL', '');
+
+      } else {
+        this.send(from, 'DENIED', {key: 'Sorry, busy, mate!'});
+        alert('Line busy');
+      }
+    }
+
+    acceptCall(from) {
+      if (this._state === 'RINGING') {
+        this._state = 'CALLER';
+        this._stateTag.textContent = this._state;
+        this.speakingWith = from;
+        this.startVideo();
+      }
+    }
+
+    startVideo() {
+      var self = this;
+      var constraints = {audio: false, video: true};
+
+      navigator.mediaDevices.getUserMedia(constraints)
+      .then(mediaStream => {
+        var video = self._localVideoTag;
+        video.srcObject = mediaStream;
+        video.onloadedmetadata = function(e) {
+          video.play();
+        };
+      })
+      .catch(function(err) { console.log(err.name + ": " + err.message); });
+    }
+
+    endVideo() {
+      this._localVideoTag.pause();
     }
   }
   return VideoEndPoint;
