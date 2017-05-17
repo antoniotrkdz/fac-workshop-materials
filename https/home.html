@@ -18,7 +18,7 @@
     <button class="endCall">Hangup</button>
     <input type="text" name="target" class="target" placeholder="Enter recipient call name">
     <button class="startCall">Call</button>
-    <video class="remotVideo"></video>
+    <video class="remoteVideo"></video>
     <video  class="localVideo"></video>
   </div>
 
@@ -30,7 +30,7 @@
     <button class="endCall">Hangup</button>
     <input type="text" name="target" class="target" placeholder="Enter recipient call name">
     <button class="startCall">Call</button>
-    <video class="remotVideo"></video>
+    <video class="remoteVideo"></video>
     <video  class="localVideo"></video>
   </div>
 
@@ -42,7 +42,7 @@
     <button class="endCall">Hangup</button>
     <input type="text" name="target" class="target" placeholder="Enter recipient call name">
     <button class="startCall">Call</button>
-    <video class="remotVideo"></video>
+    <video class="remoteVideo"></video>
     <video  class="localVideo"></video>
   </div>
 
@@ -54,15 +54,14 @@
   <button class="endCall">Hangup</button>
   <input type="text" name="target" class="target" placeholder="Enter recipient call name">
   <button class="startCall">Call</button>
-  <video class="remotVideo"></video>
+  <video class="remoteVideo"></video>
   <video  class="localVideo"></video>
 </div>
 
 </body>
   <script>
-  document.querySelector('#V1 .startCall')
   // Prefer camera resolution nearest to 1280x720.
-  var constraints = {audio: false, video: true};
+  /*var constraints = {audio: false, video: true};
 
   navigator.mediaDevices.getUserMedia(constraints)
   .then(function(mediaStream) {
@@ -72,7 +71,7 @@
     video.play();
     };
   })
-  .catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
+  .catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.*/
 </script>
 <script src="/assets/comms.js" charset="utf-8"></script>
 <script src="/assets/caller.js" charset="utf-8"></script>
