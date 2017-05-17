@@ -9,9 +9,58 @@
   </head>
   <body>
     <h1>Hello.....</h1>
-    <video class="video"></video>
-  </body>
+
+    <div id="V1">
+      <h2>Party 1:
+      <span class="state"></span>
+    </h2>
+    <button class="pause">Pause</button>
+    <button class="endCall">Hangup</button>
+    <input type="text" name="target" class="target" placeholder="Enter recipient call name">
+    <button class="startCall">Call</button>
+    <video class="remotVideo"></video>
+    <video  class="localVideo"></video>
+  </div>
+
+  <div id="V2">
+    <h2>Party 2:
+      <span class="state"></span>
+    </h2>
+    <button class="pause">Pause</button>
+    <button class="endCall">Hangup</button>
+    <input type="text" name="target" class="target" placeholder="Enter recipient call name">
+    <button class="startCall">Call</button>
+    <video class="remotVideo"></video>
+    <video  class="localVideo"></video>
+  </div>
+
+  <div id="V3">
+    <h2>Party 3:
+      <span class="state"></span>
+    </h2>
+    <button class="pause">Pause</button>
+    <button class="endCall">Hangup</button>
+    <input type="text" name="target" class="target" placeholder="Enter recipient call name">
+    <button class="startCall">Call</button>
+    <video class="remotVideo"></video>
+    <video  class="localVideo"></video>
+  </div>
+
+  <div id="V4">
+  <h2>Party 4:
+    <span class="state"></span>
+  </h2>
+  <button class="pause">Pause</button>
+  <button class="endCall">Hangup</button>
+  <input type="text" name="target" class="target" placeholder="Enter recipient call name">
+  <button class="startCall">Call</button>
+  <video class="remotVideo"></video>
+  <video  class="localVideo"></video>
+</div>
+
+</body>
   <script>
+  document.querySelector('#V1 .startCall')
   // Prefer camera resolution nearest to 1280x720.
   var constraints = {audio: false, video: true};
 
